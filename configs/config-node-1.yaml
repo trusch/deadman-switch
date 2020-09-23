@@ -1,0 +1,39 @@
+id: node-1
+listen: :8081
+checkInterval: 10s
+username: admin
+password: admin
+storage:
+  type: etcd
+  config:
+   endpoints:
+     - localhost:2379
+services:
+  - id: svc1
+    token: secret1
+    timeout: 30s
+    debounce: 1m
+    alertNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080/ping/webhook-1-alert
+    recoveryNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080/ping/webhook-1-recovery
+  - id: svc2
+    token: secret2
+    timeout: 30s
+    debounce: 1m
+    alertNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080/ping/webhook-2-alert
+    recoveryNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080/ping/webhook-2-recovery

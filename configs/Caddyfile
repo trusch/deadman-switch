@@ -1,0 +1,7 @@
+:8080 {
+	reverse_proxy localhost:8081 localhost:8082 {
+		lb_policy round_robin
+		lb_try_duration 100ms
+		lb_try_interval 250ms
+	}
+}

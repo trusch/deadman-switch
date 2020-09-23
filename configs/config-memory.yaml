@@ -1,0 +1,21 @@
+listen: :8080
+checkInterval: 10s
+username: admin
+password: admin
+storage:
+  type: memory
+services:
+  - id: srv1
+    timeout: 30s
+    alertNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080?id=webhook2
+  - id: srv2
+    timeout: 30s
+    alertNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080?id=webhook2

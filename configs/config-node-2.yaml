@@ -1,0 +1,10 @@
+id: node2
+listen: :8082
+checkInterval: 10s
+username: admin
+password: admin
+storage:
+  type: etcd
+  config:
+   endpoints:
+     - localhost:2379
