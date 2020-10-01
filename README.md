@@ -25,7 +25,7 @@ It expects to regularly receive pings from its configured services and one or mo
 Up and running in less than 5min:
 ```
 # start deadman-switch
-docker run --name deadman-switch -d --rm -p 8080:8080 -v ~/deadman-switch-data:/data trusch/deadman-switch:latest
+docker run --name deadman-switch -d --rm -p 8080:8080 trusch/deadman-switch:latest
 
 # configure service
 curl -u admin:admin -XPOST -d- localhost:8080/config <<EOF
