@@ -20,6 +20,38 @@ It expects to regularly receive pings from its configured services and one or mo
 * notifications are queued, so they can be executed by the whole cluster
 * optionally supply a secret token when configuring your services, so the ping messages can't be easily spoofed.
 
+## Quickstart
+
+Up and running in less than 5min:
+```
+# start deadman-switch
+docker run --name deadman-switch -d --rm -p 8080:8080 -v ~/deadman-switch-data:/data trusch/deadman-switch:latest
+
+# configure service
+curl -u admin:admin -XPOST -d- localhost:8080/config <<EOF
+{
+  "id": "service-1",
+  "timeout": "30s",
+  "debounce": "1m",
+  "alertNotifications": [
+	{
+	  "type": "webhook",
+	  "config": {
+	    "method": "GET",
+		"url": "http://localhost:8080/ping/alert-webhook"
+	  }
+	}
+  ]
+}
+EOF
+
+# call the ping endpoint
+curl http://localhost:8080/ping/service-1
+
+# look at the logs
+docker logs -f deadman-switch
+```
+
 ## Build and run
 
 ### Dependencies

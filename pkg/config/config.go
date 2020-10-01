@@ -55,11 +55,16 @@ type EtcdStorageConfig struct {
 	Endpoints []string `json:"endpoints"`
 }
 
+type FileStorageConfig struct {
+	File string `json:"file"`
+}
+
 type StorageType string
 
 const (
 	StorageTypeMemory StorageType = "memory"
 	StorageTypeEtcd   StorageType = "etcd"
+	StorageTypeFile   StorageType = "file"
 )
 
 type NotificationType string

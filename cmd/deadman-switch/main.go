@@ -70,6 +70,8 @@ func main() {
 	switch cfg.Storage.Type {
 	case config.StorageTypeMemory:
 		store = storage.NewMemoryStorage(cfg)
+	case config.StorageTypeFile:
+		store, err = storage.NewFileStorage(cfg)
 	case config.StorageTypeEtcd:
 		// parse connection config
 		var etcdConfig config.EtcdStorageConfig
@@ -77,7 +79,6 @@ func main() {
 		if err != nil {
 			log.Fatal().Err(err).Msg("failed to load etcd endpoints")
 		}
-
 		// connect to etcd
 		cli, err := clientv3.New(clientv3.Config{
 			Endpoints: etcdConfig.Endpoints,

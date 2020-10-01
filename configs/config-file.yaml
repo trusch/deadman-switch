@@ -1,0 +1,21 @@
+listen: :8080
+checkInterval: 10s
+username: admin
+password: admin
+storage:
+  type: file
+  config:
+    file: /tmp/deadman-switch-data
+services:
+  - id: svc1
+    timeout: 30s
+    alertNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080?id=webhook-alert
+    recoveryNotifications:
+      - type: webhook
+        config:
+          method: GET
+          url: http://localhost:8080?id=webhook-recovery

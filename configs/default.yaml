@@ -1,0 +1,9 @@
+listen: :8080
+checkInterval: 10s
+username: admin
+password: admin
+storage:
+  type: file
+  config:
+    file: /data/deadman-switch
+services: []

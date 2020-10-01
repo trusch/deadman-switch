@@ -22,6 +22,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/slack-go/slack v0.6.6
 	github.com/spf13/pflag v1.0.5
+	github.com/syndtr/goleveldb v1.0.0
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20200427203606-3cfed13b9966 // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect
 	go.etcd.io/etcd v0.0.0-20200824191128-ae9734ed278b

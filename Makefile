@@ -16,10 +16,8 @@ run: image
 	podman pod create -p 8080:8080 --name deadman-switch-pod --replace
 	podman run -d --rm --pod deadman-switch-pod --name etcd quay.io/coreos/etcd
 	podman run -d --rm --pod deadman-switch-pod --name caddy -v ./configs/Caddyfile:/Caddyfile caddy caddy run -config /Caddyfile
-	podman run -d --rm --pod deadman-switch-pod --name deadman-switch-1 -v ./configs/config-node-1.yaml:/config.yaml $(IMAGE) \
-		/bin/deadman-switch -c /config.yaml --log-level info --log-format console
-	podman run -d --rm --pod deadman-switch-pod --name deadman-switch-2 -v ./configs/config-node-2.yaml:/config.yaml $(IMAGE) \
-		/bin/deadman-switch -c /config.yaml --log-level info --log-format console
+	podman run -d --rm --pod deadman-switch-pod --name deadman-switch-1 -v ./configs/config-node-1.yaml:/etc/deadman-switch/config.yaml $(IMAGE)
+	podman run -d --rm --pod deadman-switch-pod --name deadman-switch-2 -v ./configs/config-node-2.yaml:/etc/deadman-switch/config.yaml $(IMAGE)
 
 stop:
 	podman pod rm -f deadman-switch-pod
@@ -29,6 +27,8 @@ image: .image
 .image: $(BINARIES) Makefile
 	$(eval ID=$(shell buildah from $(BASE_IMAGE)))
 	buildah copy $(ID) $(shell pwd)/bin/* /bin/
+	buildah copy $(ID) $(shell pwd)/configs/default.yaml /etc/deadman-switch/config.yaml
+	buildah config --cmd "/bin/deadman-switch --config /etc/deadman-switch/config.yaml --log-level info --log-format console" $(ID)
 	buildah commit $(ID) $(IMAGE)
 	buildah rm $(ID)
 	touch .image
@@ -49,6 +49,10 @@ bin/%: $(shell find ./ -name "*.go")
 # install locally
 install: ${BINARIES}
 	cp -v ${BINARIES} $(shell go env GOPATH)/bin/
+
+publish-image: .image
+	podman tag $(IMAGE) docker.io/trusch/deadman-switch:latest
+	podman push docker.io/trusch/deadman-switch:latest
 
 # cleanup
 clean:
