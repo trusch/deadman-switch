@@ -28,7 +28,7 @@ Up and running in less than 5min:
 docker run --name deadman-switch -d --rm -p 8080:8080 trusch/deadman-switch:latest
 
 # configure service
-curl -u admin:admin -XPOST -d- localhost:8080/config <<EOF
+curl -u admin:admin -XPOST --data-binary @- localhost:8080/config <<EOF
 {
   "id": "service-1",
   "timeout": "30s",
