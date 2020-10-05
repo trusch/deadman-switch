@@ -11,6 +11,7 @@ It expects to regularly receive pings from its configured services and one or mo
 * notifications can be send to any webhook or to slack
   * use custom URL, headers, body for webhooks
   * use custom key/value pairs on the slack message
+* configurable message debouncing
 * dynamic configuration of services and notifications via HTTP API
   * secured with basic auth
 * scalable in both directions
@@ -18,11 +19,11 @@ It expects to regularly receive pings from its configured services and one or mo
   * to a cluster that can handle thousands of pings and notifications per second
 * leader election in the cluster, so only one node checks deadlines and triggers notifications
 * notifications are queued, so they can be executed by the whole cluster
-* optionally supply a secret token when configuring your services, so the ping messages can't be easily spoofed.
+* optionally supply a secret token when configuring your services, so the ping messages can't be spoofed easily
 
 ## Quickstart
 
-Up and running in less than 5min:
+Up and running in less than 1 minute:
 ```
 # start deadman-switch
 docker run --name deadman-switch -d --rm -p 8080:8080 trusch/deadman-switch:latest
@@ -38,7 +39,7 @@ curl -u admin:admin -XPOST --data-binary @- localhost:8080/config <<EOF
 	  "type": "webhook",
 	  "config": {
 	    "method": "GET",
-		"url": "http://localhost:8080/ping/alert-webhook"
+		"url": "http://localhost:8080/log?service-1-alert"
 	  }
 	}
   ]
@@ -105,6 +106,3 @@ curl http://localhost:8080/ping/svc1?token=secret1
 
 If you don't do anything, the application will start calling its configured webhooks after 30 seconds. You can see that in the logs: `podman logs -fn deadman-switch-1 deadman-switch-2`.
 Please note that only one of the two nodes checks the deadlines, but both nodes are used to send out the actual notification webhooks.
-
-
-

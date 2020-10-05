@@ -45,6 +45,7 @@ func New(ctx context.Context, listenAddress, username, password string, store st
 func (s *Server) Listen(ctx context.Context) (err error) {
 	router := chi.NewRouter()
 	router.HandleFunc("/ping/{serviceID}", s.handlePing)
+	router.HandleFunc("/log", s.handleLog)
 	router.Route("/config", func(r chi.Router) {
 		r.Use(middleware.BasicAuth("deadman-switch", map[string]string{
 			s.username: s.password,
@@ -97,6 +98,10 @@ func (s *Server) handlePing(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("service", serviceID).Msg("received heartbeat")
 	s.updateLastHeartbeat(r.Context(), svcConfig)
 	w.Write([]byte(fmt.Sprintf("got it %s, you are still alive", serviceID)))
+}
+
+func (s *Server) handleLog(w http.ResponseWriter, r *http.Request) {
+	log.Info().Str("url", r.URL.String()).Msg("got request on the log endpoint")
 }
 
 func (s *Server) handleDeleteConfig(w http.ResponseWriter, r *http.Request) {

@@ -17,12 +17,12 @@ services:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080/ping/webhook-1-alert
+          url: http://localhost:8080/log?webhook-1-alert
     recoveryNotifications:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080/ping/webhook-1-recovery
+          url: http://localhost:8080/log?webhook-1-recovery
   - id: svc2
     token: secret2
     timeout: 30s
@@ -31,9 +31,9 @@ services:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080/ping/webhook-2-alert
+          url: http://localhost:8080/log?webhook-2-alert
     recoveryNotifications:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080/ping/webhook-2-recovery
+          url: http://localhost:8080/log?webhook-2-recovery

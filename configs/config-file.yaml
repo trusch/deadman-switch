@@ -13,9 +13,9 @@ services:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080?id=webhook-alert
+          url: http://localhost:8080/log?webhook-alert
     recoveryNotifications:
       - type: webhook
         config:
           method: GET
-          url: http://localhost:8080?id=webhook-recovery
+          url: http://localhost:8080/log?webhook-recovery
